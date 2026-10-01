@@ -13,7 +13,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 4 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
-| **Total de testes novos escritos** | 0 / 6 |
+| **Total de testes novos escritos** | 1 / 6 |
 | **Suíte final (Run As → JUnit Test)** | Em andamento |
 
 ---
@@ -58,7 +58,7 @@
 
 | # | Teste escrito (classe.método) | Regra coberta | Resultado ao escrever (vermelho/verde) |
 |---|---|---|---|
-| teste01 | | | |
+| teste01 | `RegrasSemCoberturaTest.deveCalcularPrecoPorPorteQuandoAtendimentoForBanho` | Banho custa R$ 60, R$ 80 e R$ 100 para portes pequeno, médio e grande. | Vermelho: revelou o bug05, pois pequeno retornava R$ 100 e grande retornava R$ 60. |
 | teste02 | | | |
 | teste03 | | | |
 | teste04 | | | |

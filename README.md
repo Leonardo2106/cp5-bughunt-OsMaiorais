@@ -11,7 +11,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 2 / 12 |
+| **Total de bugs corrigidos** | 3 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 0 / 6 |
 | **Suíte final (Run As → JUnit Test)** | Em andamento |
@@ -27,7 +27,7 @@
 |---|---|---|---|---|
 | bug01 | O Builder montava o atendimento com `petNome` nulo, mesmo após `comPet("Rex", ...)`. | `AtendimentoBuilder.java`, método `comPet`: o parâmetro era atribuído a ele mesmo (`petNome = petNome`). | Usei `this.petNome = petNome` para preencher o atributo da instância. | Encapsulamento, referência `this` e padrão Builder. |
 | bug02 | Ao pedir uma `TOSA`, a Factory devolvia uma instância de `Banho`. | `AtendimentoFactory.java`, ramo `TOSA` do `switch`: a subclasse concreta estava trocada. | O ramo `TOSA` passou a instanciar `Tosa`. | Factory Method, abstração e polimorfismo. |
-| bug03 | | | | |
+| bug03 | A consulta criada pela Factory perdia protocolo, pet, porte, tutor, data e status. | `ConsultaVeterinaria.java`, construtor: era chamado `super()` em vez do construtor completo da superclasse. | Encaminhei todos os parâmetros para `super(...)`. | Herança, construtores e estado válido do objeto. |
 | bug04 | | | | |
 | bug05 | | | | |
 | bug06 | | | | |

@@ -11,7 +11,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 4 / 12 |
+| **Total de bugs corrigidos** | 5 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 1 / 6 |
 | **Suíte final (Run As → JUnit Test)** | Em andamento |
@@ -29,7 +29,7 @@
 | bug02 | Ao pedir uma `TOSA`, a Factory devolvia uma instância de `Banho`. | `AtendimentoFactory.java`, ramo `TOSA` do `switch`: a subclasse concreta estava trocada. | O ramo `TOSA` passou a instanciar `Tosa`. | Factory Method, abstração e polimorfismo. |
 | bug03 | A consulta criada pela Factory perdia protocolo, pet, porte, tutor, data e status. | `ConsultaVeterinaria.java`, construtor: era chamado `super()` em vez do construtor completo da superclasse. | Encaminhei todos os parâmetros para `super(...)`. | Herança, construtores e estado válido do objeto. |
 | bug04 | Chamadas a `getInstancia()` devolviam objetos diferentes e a sequência reiniciava em 1. | `GeradorProtocolo.java`: a instância criada nunca era armazenada; o contador também não era protegido contra concorrência. | Criei uma instância única, estática e final, e sincronizei `proximo()`. | Singleton, estado compartilhado e segurança de threads. |
-| bug05 | | | | |
+| bug05 | O teste novo de preços do banho esperava R$ 60 para porte pequeno, mas recebeu R$ 100; o porte grande recebia R$ 60. | `Banho.java`, método `calcularPreco`: os valores dos portes pequeno e grande estavam invertidos. | Corrigi o mapeamento para pequeno = 60, médio = 80 e grande = 100. | Polimorfismo de sobrescrita e regra de negócio no model. |
 | bug06 | | | | |
 | bug07 | | | | |
 | bug08 | | | | |

@@ -12,9 +12,9 @@
 | Campo | |
 |---|---|
 | **Total de bugs corrigidos** | 6 / 12 |
-| **Total de ajustes de Clean Code** | 2 / 6 |
+| **Total de ajustes de Clean Code** | 3 / 6 |
 | **Total de testes novos escritos** | 3 / 6 |
-| **Suíte final (Run As → JUnit Test)** | Em andamento |
+| **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
 
 ---
 
@@ -44,7 +44,7 @@
 |---|---|---|---|
 | clean01 | `AtendimentoFactory.criar` | Parâmetros de uma letra (`p`, `t`, `n`, `po`, `tu`, `d`) escondiam a intenção do código. | Renomeei os parâmetros para `protocolo`, `tipo`, `petNome`, `petPorte`, `tutorNome` e `dataHora`. |
 | clean02 | Construtor de `GeradorProtocolo` | A classe de domínio produzia efeito colateral com `System.out.println`, misturando regra de negócio e saída de console. | Removi a impressão; a criação do Singleton agora apenas inicializa seu estado. |
-| clean03 | | | |
+| clean03 | Final de `AtendimentoController` | Código especulativo e método privado nunca usado aumentavam o ruído e sugeriam uma regra de desconto ainda não aprovada. | Removi o comentário de funcionalidade futura e `calcularDescontoFidelidade`, mantendo apenas responsabilidades atuais do controller. |
 | clean04 | | | |
 | clean05 | | | |
 | clean06 | | | |
@@ -77,16 +77,34 @@ O projeto chegou com 20 testes, 9 vermelhos. Descreva como você usou as
 mensagens de falha (ex.: `expected: <Rex> but was: <null>`) para caçar os bugs.
 O que a suíte de testes tem de melhor do que testar tudo na mão com curl?
 
+Comecei pelas mensagens objetivas da suíte e relacionei cada valor recebido ao ponto onde o objeto era montado.
+O `expected: <Rex> but was: <null>` levou ao `petNome = petNome` do Builder, que não alterava o atributo.
+O tipo concreto errado apontou para o ramo `TOSA` da Factory e a sequência reiniciada apontou para o Singleton.
+Os testes repetem os mesmos cenários de forma rápida e determinística, sem depender de servidor, banco ou requisições manuais.
+Com `curl`, o diagnóstico seria mais lento e seria fácil confundir falha de infraestrutura com falha de regra de negócio.
+
 ### 2. Mock e injeção de dependência (Aulas 13 a 15)
 No `AgendaServiceTest`, o `@Mock` cria um `AtendimentoRepository` falso e o
 `@InjectMocks` o injeta no service. Explique a relação disso com o `@Autowired`
 que o Spring faz em produção — quem "injeta" em cada mundo, e por que o teste
 consegue rodar sem banco e sem subir o Spring?
 
+Em produção, o Spring encontra `AgendaService` por `@Service` e injeta uma implementação de `AtendimentoRepository` pelo `@Autowired`.
+No teste, a extensão do Mockito processa `@Mock` e cria um substituto controlável para o repositório.
+Depois, `@InjectMocks` coloca esse objeto falso no `AgendaService`, ocupando o papel que seria do container.
+Os `when(...)` definem as respostas necessárias e `verify(...)` confirma se a colaboração ocorreu como esperado.
+Assim, a lógica do serviço é testada sem abrir conexão Oracle e sem inicializar o contexto do Spring.
+
 ### 3. `==` vs `.equals()` (Aula 7)
 Um dos bugs fazia o agendamento duplicado passar pela verificação de conflito.
 Explique por que `==` entre Strings e `LocalDateTime` falhou aqui, por que ele
 "funciona por sorte" com literais como `"Rex"`, e o que a sua correção mudou.
+
+No código recebido, `==` compara se duas referências apontam para o mesmo objeto, não se os valores são equivalentes.
+Strings literais podem compartilhar a referência pelo pool da JVM, criando a impressão de que a comparação funciona.
+Uma String ou `LocalDateTime` reconstruído pela requisição pode ter o mesmo valor em outra instância, deixando o conflito passar.
+Esse item não integra os seis bugs corrigidos nesta entrega parcial e permanece visível na suíte final.
+A correção prevista é comparar os valores com `.equals()`, mantendo também a condição de status `AGENDADO`.
 
 ### 4. Sobrescrita vs sobrecarga (Aula 7)
 Um dos bugs compilava sem nenhum erro: um método parecia sobrescrever
@@ -94,10 +112,22 @@ Um dos bugs compilava sem nenhum erro: um método parecia sobrescrever
 diferença entre override e overload nesse caso e por que a anotação `@Override`
 teria impedido o bug.
 
+`Atendimento` declara `getDuracaoMinutos()` sem parâmetros, retornando 30 por padrão.
+`Tosa` possuía `getDuracaoMinutos(String porte)`, portanto criava uma sobrecarga com assinatura diferente.
+Quando o objeto era acessado como `Atendimento`, o método herdado continuava sendo chamado e devolvia 30.
+A correção removeu o parâmetro e adicionou `@Override`, fazendo a tosa fornecer seus 60 minutos polimorficamente.
+Se a anotação existisse desde o início, o compilador teria rejeitado a assinatura incompatível.
+
 ### 5. Singleton manual vs bean do Spring (Aula 14)
 O `GeradorProtocolo` é um Singleton escrito à mão e causou um dos bugs.
 Explique o que ele garante, qual foi o bug, e por que o `AgendaService`
 (`@Service`) não corre o mesmo risco no container do Spring.
+
+O `GeradorProtocolo` precisa manter uma única instância para todos os atendimentos compartilharem o contador.
+O método original criava um objeto quando o campo era nulo, mas não o armazenava, reiniciando a sequência.
+Passei a usar uma instância `static final` e sincronizei `proximo()` para proteger incrementos concorrentes.
+Já o `AgendaService` é descoberto por `@Service` e o container administra, por padrão, uma única instância desse bean.
+O Singleton manual depende da implementação Java correta; o ciclo de vida do serviço é responsabilidade do Spring.
 
 ### 6. Cobertura de testes: onde parar? (Aula 15)
 Dos 6 testes novos que você escreveu, alguns ficaram vermelhos (revelaram
@@ -105,12 +135,16 @@ bugs) e outros verdes de cara (regras já corretas). Vale a pena manter os que
 ficaram verdes? Em um projeto real com prazo, o que você priorizaria testar:
 caminho feliz, caminhos de erro, ou 100% de cobertura? Justifique.
 
+Nesta entrega parcial foram escritos três dos seis testes: dois nasceram vermelhos e um nasceu verde.
+O teste verde da consulta continua valioso porque protege a regra de preço fixo contra regressões futuras.
+Em um projeto real, eu começaria pelas regras de maior impacto e pelos erros que evitam dados inválidos ou perdas.
+Também manteria ao menos um caminho feliz por fluxo principal, comprovando que as partes colaboram corretamente.
+Cobertura de 100% é um indicador, não um objetivo isolado: testes relevantes valem mais que linhas exercitadas sem boas asserções.
+
 ---
 
 ## Parte 5 — Espaço livre (opcional)
 
 Alguma dificuldade, dúvida ou comentário sobre o checkpoint?
 
-```
-
-```
+Foram implementados exatamente metade dos itens solicitados em cada categoria, conforme o escopo desta entrega.

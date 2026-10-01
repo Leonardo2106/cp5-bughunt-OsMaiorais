@@ -11,10 +11,10 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | ___ / 12 |
-| **Total de ajustes de Clean Code** | ___ / 6 |
-| **Total de testes novos escritos** | ___ / 6 |
-| **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
+| **Total de bugs corrigidos** | 1 / 12 |
+| **Total de ajustes de Clean Code** | 0 / 6 |
+| **Total de testes novos escritos** | 0 / 6 |
+| **Suíte final (Run As → JUnit Test)** | Em andamento |
 
 ---
 
@@ -25,7 +25,7 @@
 
 | # | Sintoma observado (o que fiz/vi) | Causa raiz (arquivo e linha aproximada) | Correção aplicada | Conceito da disciplina |
 |---|---|---|---|---|
-| bug01 | | | | |
+| bug01 | O Builder montava o atendimento com `petNome` nulo, mesmo após `comPet("Rex", ...)`. | `AtendimentoBuilder.java`, método `comPet`: o parâmetro era atribuído a ele mesmo (`petNome = petNome`). | Usei `this.petNome = petNome` para preencher o atributo da instância. | Encapsulamento, referência `this` e padrão Builder. |
 | bug02 | | | | |
 | bug03 | | | | |
 | bug04 | | | | |

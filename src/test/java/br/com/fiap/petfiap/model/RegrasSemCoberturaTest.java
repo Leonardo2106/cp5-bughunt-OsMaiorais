@@ -35,4 +35,17 @@ public class RegrasSemCoberturaTest {
         // Assert
         assertEquals(60, duracao);
     }
+
+    @Test
+    public void deveManterPrecoFixoQuandoConsultaTiverQualquerPorte() {
+        // Arrange
+        ConsultaVeterinaria pequena = new ConsultaVeterinaria(25, "Rex", "PEQUENO", "Ana", data);
+        ConsultaVeterinaria media = new ConsultaVeterinaria(26, "Mimi", "MEDIO", "Bruno", data);
+        ConsultaVeterinaria grande = new ConsultaVeterinaria(27, "Thor", "GRANDE", "Carla", data);
+
+        // Act + Assert
+        assertEquals(150.0, pequena.calcularPreco(), 0.001);
+        assertEquals(150.0, media.calcularPreco(), 0.001);
+        assertEquals(150.0, grande.calcularPreco(), 0.001);
+    }
 }

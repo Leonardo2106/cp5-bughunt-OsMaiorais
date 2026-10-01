@@ -13,7 +13,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 5 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
-| **Total de testes novos escritos** | 1 / 6 |
+| **Total de testes novos escritos** | 2 / 6 |
 | **Suíte final (Run As → JUnit Test)** | Em andamento |
 
 ---
@@ -59,7 +59,7 @@
 | # | Teste escrito (classe.método) | Regra coberta | Resultado ao escrever (vermelho/verde) |
 |---|---|---|---|
 | teste01 | `RegrasSemCoberturaTest.deveCalcularPrecoPorPorteQuandoAtendimentoForBanho` | Banho custa R$ 60, R$ 80 e R$ 100 para portes pequeno, médio e grande. | Vermelho: revelou o bug05, pois pequeno retornava R$ 100 e grande retornava R$ 60. |
-| teste02 | | | |
+| teste02 | `RegrasSemCoberturaTest.deveDurar60MinutosQuandoAtendimentoForTosa` | Tosa dura 60 minutos mesmo quando referenciada pelo tipo abstrato `Atendimento`. | Vermelho: revelou o bug06; a chamada polimórfica usava os 30 minutos da superclasse. |
 | teste03 | | | |
 | teste04 | | | |
 | teste05 | | | |

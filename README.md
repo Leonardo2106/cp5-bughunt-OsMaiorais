@@ -12,7 +12,7 @@
 | Campo | |
 |---|---|
 | **Total de bugs corrigidos** | 6 / 12 |
-| **Total de ajustes de Clean Code** | 0 / 6 |
+| **Total de ajustes de Clean Code** | 1 / 6 |
 | **Total de testes novos escritos** | 3 / 6 |
 | **Suíte final (Run As → JUnit Test)** | Em andamento |
 
@@ -42,7 +42,7 @@
 
 | # | Onde estava | Qual princípio/boas práticas era violado | O que eu mudei |
 |---|---|---|---|
-| clean01 | | | |
+| clean01 | `AtendimentoFactory.criar` | Parâmetros de uma letra (`p`, `t`, `n`, `po`, `tu`, `d`) escondiam a intenção do código. | Renomeei os parâmetros para `protocolo`, `tipo`, `petNome`, `petPorte`, `tutorNome` e `dataHora`. |
 | clean02 | | | |
 | clean03 | | | |
 | clean04 | | | |

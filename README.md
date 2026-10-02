@@ -14,7 +14,7 @@
 | **Total de bugs corrigidos** | 12 / 12 |
 | **Total de ajustes de Clean Code** | 6 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
-| **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
+| **Suíte final (Run As → JUnit Test)** | 26 testes (20 entregues + 6 novos), 0 falhas |
 
 ---
 
@@ -103,8 +103,7 @@ Explique por que `==` entre Strings e `LocalDateTime` falhou aqui, por que ele
 No código recebido, `==` compara se duas referências apontam para o mesmo objeto, não se os valores são equivalentes.
 Strings literais podem compartilhar a referência pelo pool da JVM, criando a impressão de que a comparação funciona.
 Uma String ou `LocalDateTime` reconstruído pela requisição pode ter o mesmo valor em outra instância, deixando o conflito passar.
-Esse item não integra os seis bugs corrigidos nesta entrega parcial e permanece visível na suíte final.
-A correção prevista é comparar os valores com `.equals()`, mantendo também a condição de status `AGENDADO`.
+A correção (bug07) comparou o nome do pet e a data/hora com `.equals()` em `AgendaService.agendar`, mantendo também a condição de status `AGENDADO`.
 
 ### 4. Sobrescrita vs sobrecarga (Aula 7)
 Um dos bugs compilava sem nenhum erro: um método parecia sobrescrever
@@ -135,8 +134,8 @@ bugs) e outros verdes de cara (regras já corretas). Vale a pena manter os que
 ficaram verdes? Em um projeto real com prazo, o que você priorizaria testar:
 caminho feliz, caminhos de erro, ou 100% de cobertura? Justifique.
 
-Nesta entrega parcial foram escritos três dos seis testes: dois nasceram vermelhos e um nasceu verde.
-O teste verde da consulta continua valioso porque protege a regra de preço fixo contra regressões futuras.
+Dos seis testes novos, quatro nasceram vermelhos (banho, tosa, cancelamento de concluído e data no passado) e dois nasceram verdes (preço fixo da consulta e conclusão de cancelado).
+Os testes verdes continuam valiosos porque protegem regras como o preço fixo da consulta e a transição de status contra regressões futuras.
 Em um projeto real, eu começaria pelas regras de maior impacto e pelos erros que evitam dados inválidos ou perdas.
 Também manteria ao menos um caminho feliz por fluxo principal, comprovando que as partes colaboram corretamente.
 Cobertura de 100% é um indicador, não um objetivo isolado: testes relevantes valem mais que linhas exercitadas sem boas asserções.
@@ -147,4 +146,4 @@ Cobertura de 100% é um indicador, não um objetivo isolado: testes relevantes v
 
 Alguma dificuldade, dúvida ou comentário sobre o checkpoint?
 
-Foram implementados exatamente metade dos itens solicitados em cada categoria, conforme o escopo desta entrega.
+Todos os 12 bugs, 6 ajustes de Clean Code e 6 testes novos foram registrados, cada um com seu commit. Os 20 testes entregues não foram alterados. A suíte foi executada com um runner manual (JUnit 5 + Mockito, sem Maven), com 26 testes passando e 0 falhas. O bug12 (`@GeneratedValue` ausente no `id`) não é coberto por teste unitário, pois exige JPA/banco.

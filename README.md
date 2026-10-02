@@ -12,7 +12,7 @@
 | Campo | |
 |---|---|
 | **Total de bugs corrigidos** | 12 / 12 |
-| **Total de ajustes de Clean Code** | 3 / 6 |
+| **Total de ajustes de Clean Code** | 4 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
 
@@ -45,7 +45,7 @@
 | clean01 | `AtendimentoFactory.criar` | Parâmetros de uma letra (`p`, `t`, `n`, `po`, `tu`, `d`) escondiam a intenção do código. | Renomeei os parâmetros para `protocolo`, `tipo`, `petNome`, `petPorte`, `tutorNome` e `dataHora`. |
 | clean02 | Construtor de `GeradorProtocolo` | A classe de domínio produzia efeito colateral com `System.out.println`, misturando regra de negócio e saída de console. | Removi a impressão; a criação do Singleton agora apenas inicializa seu estado. |
 | clean03 | Final de `AtendimentoController` | Código especulativo e método privado nunca usado aumentavam o ruído e sugeriam uma regra de desconto ainda não aprovada. | Removi o comentário de funcionalidade futura e `calcularDescontoFidelidade`, mantendo apenas responsabilidades atuais do controller. |
-| clean04 | | | |
+| clean04 | Método `agendar` de `AgendaService` | A camada de serviço misturava regra de agenda com saída de console (`System.out.println` de "Recibo"), efeito colateral que não é responsabilidade do service e não é testável. | Removi a impressão; `agendar` agora apenas valida, salva e retorna o atendimento. |
 | clean05 | | | |
 | clean06 | | | |
 

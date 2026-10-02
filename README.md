@@ -13,7 +13,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 9 / 12 |
 | **Total de ajustes de Clean Code** | 3 / 6 |
-| **Total de testes novos escritos** | 3 / 6 |
+| **Total de testes novos escritos** | 4 / 6 |
 | **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
 
 ---
@@ -61,7 +61,7 @@
 | teste01 | `RegrasSemCoberturaTest.deveCalcularPrecoPorPorteQuandoAtendimentoForBanho` | Banho custa R$ 60, R$ 80 e R$ 100 para portes pequeno, médio e grande. | Vermelho: revelou o bug05, pois pequeno retornava R$ 100 e grande retornava R$ 60. |
 | teste02 | `RegrasSemCoberturaTest.deveDurar60MinutosQuandoAtendimentoForTosa` | Tosa dura 60 minutos mesmo quando referenciada pelo tipo abstrato `Atendimento`. | Vermelho: revelou o bug06; a chamada polimórfica usava os 30 minutos da superclasse. |
 | teste03 | `RegrasSemCoberturaTest.deveManterPrecoFixoQuandoConsultaTiverQualquerPorte` | Consulta veterinária custa R$ 150 para qualquer porte. | Verde de cara: a regra de preço fixo já estava implementada corretamente. |
-| teste04 | | | |
+| teste04 | `RegrasSemCoberturaTest.deveRecusarCancelamentoQuandoAtendimentoJaEstiverConcluido` | `cancelar()` em atendimento `CONCLUIDO` deve ser recusado com `StatusInvalidoException` (atendimento já realizado) e manter o status. | Vermelho: revelou o bug10; o `cancelar()` mudava o status para `CANCELADO` sem verificar o estado atual. |
 | teste05 | | | |
 | teste06 | | | |
 

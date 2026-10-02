@@ -11,7 +11,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 9 / 12 |
+| **Total de bugs corrigidos** | 10 / 12 |
 | **Total de ajustes de Clean Code** | 3 / 6 |
 | **Total de testes novos escritos** | 4 / 6 |
 | **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
@@ -34,7 +34,7 @@
 | bug07 | O agendamento duplicado do mesmo pet no mesmo horário passava pela verificação de conflito e era salvo; no teste, o `save` era chamado e o resultado nulo gerava `NullPointerException` em vez de `HorarioOcupadoException`. | `AgendaService.java`, método `agendar`: `getPetNome()` e `getDataHora()` eram comparados com `==`, que compara referências e não valores (um `LocalDateTime` vindo de outra requisição é outro objeto). | Troquei `==` por `.equals()` nas duas comparações, mantendo a condição de status `AGENDADO`. | `==` vs `.equals()` e referências de objetos (Aula 7). |
 | bug08 | Buscar um id inexistente retornava `null` em vez de lançar `AtendimentoNaoEncontradoException`; `concluir` e `cancelar` dariam `NullPointerException` e o controller nunca devolveria 404. | `AgendaService.java`, método `buscarPorId`: o `catch (Exception e) { return null; }` capturava a exceção lançada pelo `orElseThrow` e a transformava em `null`. | Removi o `try/catch` genérico; a exceção customizada agora chega a quem chamou (e o controller a converte em 404). | Tratamento de exceções: não engolir exceções com `catch` genérico e exceções unchecked customizadas (Aula 11). |
 | bug09 | O Builder aceitava montar um atendimento sem nome do pet ou sem porte, gerando objetos inválidos (os testes esperavam `IllegalArgumentException` e nada era lançado). | `AtendimentoBuilder.java`, método `construir`: não havia validação; o comentário delegava a regra ao controller, que também não validava. | Adicionei a validação no `construir()`: nome e porte nulos ou em branco lançam `IllegalArgumentException` com mensagem clara; o controller já converte isso em 400. | Padrão Builder (validação na construção), encapsulamento e estado válido do objeto (Aulas 3, 4 e 14). |
-| bug10 | | | | |
+| bug10 | Um atendimento já CONCLUIDO (ou já CANCELADO) podia ser cancelado, voltando para `CANCELADO` sem erro; o teste04 esperava `StatusInvalidoException`. | `Atendimento.java`, método `cancelar`: atribuía `status = "CANCELADO"` sem verificar o status atual, ao contrário de `concluir()`. | `cancelar()` agora só aceita `AGENDADO` e lança `StatusInvalidoException` nos demais casos, como já fazia `concluir()`; o controller responde 409. | Encapsulamento das regras de transição de status no model e exceções customizadas (Aulas 3 e 11). |
 | bug11 | | | | |
 | bug12 | | | | |
 

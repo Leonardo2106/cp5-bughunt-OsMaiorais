@@ -12,7 +12,7 @@
 | Campo | |
 |---|---|
 | **Total de bugs corrigidos** | 12 / 12 |
-| **Total de ajustes de Clean Code** | 5 / 6 |
+| **Total de ajustes de Clean Code** | 6 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
 
@@ -47,7 +47,7 @@
 | clean03 | Final de `AtendimentoController` | Código especulativo e método privado nunca usado aumentavam o ruído e sugeriam uma regra de desconto ainda não aprovada. | Removi o comentário de funcionalidade futura e `calcularDescontoFidelidade`, mantendo apenas responsabilidades atuais do controller. |
 | clean04 | Método `agendar` de `AgendaService` | A camada de serviço misturava regra de agenda com saída de console (`System.out.println` de "Recibo"), efeito colateral que não é responsabilidade do service e não é testável. | Removi a impressão; `agendar` agora apenas valida, salva e retorna o atendimento. |
 | clean05 | `Atendimento` e `AgendaService` | Strings mágicas: os status `"AGENDADO"`, `"CONCLUIDO"` e `"CANCELADO"` estavam repetidos como literais, sujeitos a erro de digitação e difíceis de alterar. | Criei as constantes `Atendimento.AGENDADO`, `CONCLUIDO` e `CANCELADO` e passei a usá-las no construtor, em `concluir()`, `cancelar()` e no service (mesmos valores, sem mudança de comportamento). |
-| clean06 | | | |
+| clean06 | Laço de `AgendaService.agendar` | Nomes pouco expressivos (`doPet`, `a`) e uma condição composta com três regras embutida no `if`, misturando detalhe da verificação com o fluxo de agendar (Clean Code: nomes que revelam intenção e funções pequenas). | Renomeei as variáveis para `atendimentosDoPet` e `existente` e extraí a condição para o método privado `conflita(existente, novo)`, deixando `agendar` mais legível. |
 
 ## Parte 3 — Testes novos (regras que estavam sem cobertura)
 

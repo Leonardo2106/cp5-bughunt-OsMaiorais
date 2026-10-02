@@ -61,4 +61,15 @@ public class RegrasSemCoberturaTest {
         assertThrows(StatusInvalidoException.class, concluido::cancelar);
         assertEquals("CONCLUIDO", concluido.getStatus());
     }
+
+    @Test
+    public void deveRecusarConclusaoQuandoAtendimentoEstiverCancelado() {
+        // Arrange
+        Tosa cancelada = new Tosa(29, "Rex", "PEQUENO", "Ana", data);
+        cancelada.cancelar();
+
+        // Act + Assert: atendimento cancelado nao pode ser concluido
+        assertThrows(StatusInvalidoException.class, cancelada::concluir);
+        assertEquals("CANCELADO", cancelada.getStatus());
+    }
 }

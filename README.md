@@ -13,7 +13,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 12 / 12 |
 | **Total de ajustes de Clean Code** | 3 / 6 |
-| **Total de testes novos escritos** | 5 / 6 |
+| **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
 
 ---
@@ -63,7 +63,7 @@
 | teste03 | `RegrasSemCoberturaTest.deveManterPrecoFixoQuandoConsultaTiverQualquerPorte` | Consulta veterinária custa R$ 150 para qualquer porte. | Verde de cara: a regra de preço fixo já estava implementada corretamente. |
 | teste04 | `RegrasSemCoberturaTest.deveRecusarCancelamentoQuandoAtendimentoJaEstiverConcluido` | `cancelar()` em atendimento `CONCLUIDO` deve ser recusado com `StatusInvalidoException` (atendimento já realizado) e manter o status. | Vermelho: revelou o bug10; o `cancelar()` mudava o status para `CANCELADO` sem verificar o estado atual. |
 | teste05 | `AgendaServiceRegrasSemCoberturaTest.deveRecusarAgendamentoQuandoDataHoraForNoPassado` | Agendar com data/hora no passado deve ser recusado com `IllegalArgumentException` e o repository não deve ser acionado (`verifyNoInteractions`). | Vermelho: revelou o bug11; o service não validava a data e seguia para o banco (no mock, `NullPointerException` em vez de `IllegalArgumentException`). |
-| teste06 | | | |
+| teste06 | `RegrasSemCoberturaTest.deveRecusarConclusaoQuandoAtendimentoEstiverCancelado` | `concluir()` em atendimento `CANCELADO` deve ser recusado com `StatusInvalidoException` e manter o status `CANCELADO`. | Verde de cara: a regra já estava correta em `Atendimento.concluir()`, que só aceita `AGENDADO`. |
 
 ---
 

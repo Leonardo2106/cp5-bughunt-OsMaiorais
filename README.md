@@ -11,7 +11,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 7 / 12 |
+| **Total de bugs corrigidos** | 8 / 12 |
 | **Total de ajustes de Clean Code** | 3 / 6 |
 | **Total de testes novos escritos** | 3 / 6 |
 | **Suíte final (Run As → JUnit Test)** | 23 testes, 4 falhas (entrega parcial solicitada) |
@@ -32,7 +32,7 @@
 | bug05 | O teste novo de preços do banho esperava R$ 60 para porte pequeno, mas recebeu R$ 100; o porte grande recebia R$ 60. | `Banho.java`, método `calcularPreco`: os valores dos portes pequeno e grande estavam invertidos. | Corrigi o mapeamento para pequeno = 60, médio = 80 e grande = 100. | Polimorfismo de sobrescrita e regra de negócio no model. |
 | bug06 | O teste novo chamou `getDuracaoMinutos()` por uma referência `Atendimento` e recebeu 30, não 60. | `Tosa.java`: `getDuracaoMinutos(String porte)` era uma sobrecarga, não a sobrescrita do método sem parâmetros. | Removi o parâmetro e adicionei `@Override`, fazendo a chamada polimórfica retornar 60. | Sobrescrita versus sobrecarga e anotação `@Override` (Aula 7). |
 | bug07 | O agendamento duplicado do mesmo pet no mesmo horário passava pela verificação de conflito e era salvo; no teste, o `save` era chamado e o resultado nulo gerava `NullPointerException` em vez de `HorarioOcupadoException`. | `AgendaService.java`, método `agendar`: `getPetNome()` e `getDataHora()` eram comparados com `==`, que compara referências e não valores (um `LocalDateTime` vindo de outra requisição é outro objeto). | Troquei `==` por `.equals()` nas duas comparações, mantendo a condição de status `AGENDADO`. | `==` vs `.equals()` e referências de objetos (Aula 7). |
-| bug08 | | | | |
+| bug08 | Buscar um id inexistente retornava `null` em vez de lançar `AtendimentoNaoEncontradoException`; `concluir` e `cancelar` dariam `NullPointerException` e o controller nunca devolveria 404. | `AgendaService.java`, método `buscarPorId`: o `catch (Exception e) { return null; }` capturava a exceção lançada pelo `orElseThrow` e a transformava em `null`. | Removi o `try/catch` genérico; a exceção customizada agora chega a quem chamou (e o controller a converte em 404). | Tratamento de exceções: não engolir exceções com `catch` genérico e exceções unchecked customizadas (Aula 11). |
 | bug09 | | | | |
 | bug10 | | | | |
 | bug11 | | | | |
